@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "963278375723",
+    "project_id": "tp-vetements",
+    "storage_bucket": "tp-vetements.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963278375723:android:5e16021785e261aabe136e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_applicat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDifbcEWf3XNUfcnYsbJNWh365wgvRqXSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963278375723:android:a0cd68558c9b3317be136e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDifbcEWf3XNUfcnYsbJNWh365wgvRqXSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
