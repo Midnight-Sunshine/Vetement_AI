@@ -69,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Colors.deepPurple,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );
@@ -81,22 +83,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       itemCount: _clothingItems.length,
       itemBuilder: (context, index) {
         final item = _clothingItems[index];
         return Card(
-          margin: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
           child: ListTile(
             leading: _buildImage(item.imageUrl),
-            title: Text(item.title),
-            subtitle: Text('Taille: ${item.size}\nPrix: ${item.price.toStringAsFixed(2)} €'),
+            title: Text(
+              item.title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            subtitle: Text(
+              'Taille: ${item.size}\nPrix: ${item.price.toStringAsFixed(2)} €',
+              style: const TextStyle(color: Colors.grey),
+            ),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ClothingDetailPage(
-                    clothingItem: item,
-                  ),
+                  builder: (context) => ClothingDetailPage(clothingItem: item),
                 ),
               );
             },
@@ -109,9 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildImage(String base64String) {
     try {
       Uint8List bytes = base64Decode(base64String);
-      return Image.memory(bytes, width: 50, height: 50, fit: BoxFit.cover);
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.memory(
+          bytes,
+          width: 70,
+          height: 70,
+          fit: BoxFit.cover,
+        ),
+      );
     } catch (e) {
-      return const Icon(Icons.error, size: 50);
+      return const Icon(Icons.error, size: 70);
     }
   }
 }

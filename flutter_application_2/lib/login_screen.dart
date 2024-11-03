@@ -82,25 +82,21 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Nom de l'Application"),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white, 
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Bon retour !",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               const SizedBox(height: 32.0),
               TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(
-                  labelText: 'Nom d’utilisateur ou Email',
+                  labelText: 'Login',
+                  labelStyle: TextStyle(color: Colors.black), 
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                 ),
@@ -110,14 +106,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: _isPasswordObscured,
                 decoration: InputDecoration(
-                  labelText: 'Mot de passe',
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.black),
                   border: const OutlineInputBorder(),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isPasswordObscured
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      _isPasswordObscured ? Icons.visibility : Icons.visibility_off,
+                      color: Theme.of(context).primaryColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -133,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -140,10 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: const Text(
                     'Se connecter',
-                    style: TextStyle(fontSize: 18.0),
+                    style: TextStyle(fontSize: 18.0, color: Colors.white), 
                   ),
                 ),
               ),
+              const SizedBox(height: 16.0),
             ],
           ),
         ),

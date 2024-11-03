@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import '../Models/clothing_item_model.dart';
 import '../Controllers/add_clothing_controller.dart';
@@ -100,62 +101,72 @@ class _AddClothingItemPageState extends State<AddClothingItemPage> {
       appBar: AppBar(
         title: const Text('Ajouter un nouvel article'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Titre'),
-            ),
-            TextFormField(
-              controller: _sizeController,
-              decoration: const InputDecoration(labelText: 'Taille'),
-            ),
-            TextFormField(
-              controller: _categoryController,
-              decoration: const InputDecoration(labelText: 'Catégorie'),
-            ),
-            TextFormField(
-              controller: _brandController,
-              decoration: const InputDecoration(labelText: 'Marque'),
-            ),
-            TextFormField(
-              controller: _priceController,
-              decoration: const InputDecoration(labelText: 'Prix'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: const Text('Télécharger l\'image'),
-            ),
-            const SizedBox(height: 20),
-            if (_imageBytes != null)
-              Image.memory(
-                _imageBytes!,
-                height: 150,
-                width: 150,
-                fit: BoxFit.cover,
+      body: SingleChildScrollView( // Enable scrolling
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Titre'),
               ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final clothingItem = ClothingItem(
-                  title: _titleController.text,
-                  size: _sizeController.text,
-                  category: _categoryController.text,
-                  brand: _brandController.text,
-                  price: double.tryParse(_priceController.text) ?? 0.0,
-                  imageUrl: _base64Image,
-                  documentId: '',
-                );
+              TextFormField(
+                controller: _categoryController,
+                readOnly: true,
+                decoration: const InputDecoration(labelText: 'Catégorie'),
+              ),
+              TextFormField(
+                controller: _sizeController,
+                decoration: const InputDecoration(labelText: 'Taille'),
+              ),
+              TextFormField(
+                controller: _brandController,
+                decoration: const InputDecoration(labelText: 'Marque'),
+              ),
+              TextFormField(
+                controller: _priceController,
+                decoration: const InputDecoration(labelText: 'Prix'),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, 
+                ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: const Text('Télécharger l\'image'),
+              ),
+              const SizedBox(height: 20),
+              if (_imageBytes != null)
+                Image.memory(
+                  _imageBytes!,
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.cover,
+                ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  final clothingItem = ClothingItem(
+                    title: _titleController.text,
+                    size: _sizeController.text,
+                    category: _categoryController.text,
+                    brand: _brandController.text,
+                    price: double.tryParse(_priceController.text) ?? 0.0,
+                    imageUrl: _base64Image,
+                    documentId: '',
+                  );
 
-                _controller.addClothingItem(clothingItem);
-              },
-              child: const Text('Ajouter l\'article'),
-            ),
-          ],
+                  _controller.addClothingItem(clothingItem);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Ajouter l\'article'),
+              ),
+            ],
+          ),
         ),
       ),
     );

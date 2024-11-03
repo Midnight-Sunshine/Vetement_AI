@@ -33,7 +33,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header(title: 'Liste des Vêtements'),
+      appBar: const Header(title: 'Mon panier'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: _cartController.cartProducts.isEmpty
@@ -80,9 +80,39 @@ class _CartPageState extends State<CartPage> {
                       },
                     ),
                   ),
-                  Text(
-                    'Total: ${_cartController.totalPrice.toStringAsFixed(2)} €',
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: const BoxDecoration(
+                      color: Colors.deepPurple, 
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 4),
+                          blurRadius: 8.0,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Total:',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          '${_cartController.totalPrice.toStringAsFixed(2)} €',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

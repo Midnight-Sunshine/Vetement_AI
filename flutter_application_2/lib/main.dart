@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/firebase_options.dart';
 import 'login_screen.dart';
-import 'Views/home_screen.dart'; // Import the new home screen file
+import 'Views/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
-        '/home': (context) => const MyHomePage(title: 'Flutter Demo Home Page'), // Updated to use new home screen
+        '/home': (context) => const MyHomePage(title: 'Flutter Demo Home Page'), 
       },
     );
   }

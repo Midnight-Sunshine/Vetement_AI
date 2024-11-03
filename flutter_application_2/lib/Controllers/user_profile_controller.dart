@@ -9,6 +9,7 @@ class UserProfileController {
   UserProfile? _userProfile;
 
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController(); 
   final TextEditingController addressController = TextEditingController();
   final TextEditingController postalCodeController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
@@ -63,17 +64,18 @@ class UserProfileController {
         );
 
         usernameController.text = _userProfile!.username;
+        passwordController.text = _userProfile!.password; 
         addressController.text = _userProfile!.address;
         postalCodeController.text = _userProfile!.postalCode;
         cityController.text = _userProfile!.city;
         _selectedBirthday = _userProfile!.birthday;
-        return false;
+        return false; 
       } else {
         throw Exception('Document utilisateur introuvable');
       }
     } catch (e) {
       print('Erreur lors de la récupération du profil utilisateur: $e');
-      return true;
+      return true; 
     }
   }
 
@@ -90,39 +92,29 @@ class UserProfileController {
   }
 
   Future<void> updatePassword() async {
-    String newPassword = newPasswordController.text;
-    String confirmPassword = confirmPasswordController.text;
+    String password = passwordController.text;
 
-    if (newPassword.isNotEmpty && newPassword == confirmPassword) {
+    if (password.isNotEmpty) {
       try {
         User? user = FirebaseAuth.instance.currentUser;
 
         if (user != null) {
-          await user.updatePassword(newPassword);
+          await user.updatePassword(password);
           if (_userProfile != null) {
             await FirebaseFirestore.instance
                 .collection('users')
                 .doc(_userProfile!.documentId)
-                .update({'password': newPassword});
+                .update({'password': password});
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Mot de passe mis à jour avec succès')),
           );
-
-          newPasswordController.clear();
-          confirmPasswordController.clear();
         }
       } catch (e) {
         print('Erreur lors de la mise à jour du mot de passe: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
-      }
-    } else {
-      if (!(newPassword == confirmPassword)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Les mots de passe ne correspondent pas')),
+          SnackBar(content: Text('Erreur : ${e.toString()}')),
         );
       }
     }
@@ -130,20 +122,46 @@ class UserProfileController {
 
   Future<void> saveProfile() async {
     if (_userProfile != null) {
-      await FirebaseFirestore.instance
+      DocumentSnapshot userProfileSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(_userProfile!.documentId)
-          .update({
-        'username': usernameController.text,
-        'birthday': Timestamp.fromDate(_selectedBirthday!),
-        'address': addressController.text,
-        'postalCode': postalCodeController.text,
-        'city': cityController.text,
-      });
+          .get();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profil mis à jour avec succès')),
-      );
+      bool changesMade = false;
+
+      if (usernameController.text != userProfileSnapshot['username']) {
+        changesMade = true;
+      }
+      if (_selectedBirthday != null && 
+          (_selectedBirthday != userProfileSnapshot['birthday'].toDate())) {
+        changesMade = true;
+      }
+      if (addressController.text != userProfileSnapshot['address']) {
+        changesMade = true;
+      }
+      if (postalCodeController.text != userProfileSnapshot['postalCode']) {
+        changesMade = true;
+      }
+      if (cityController.text != userProfileSnapshot['city']) {
+        changesMade = true;
+      }
+
+      if (changesMade) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_userProfile!.documentId)
+            .update({
+          'username': usernameController.text,
+          'birthday': Timestamp.fromDate(_selectedBirthday!),
+          'address': addressController.text,
+          'postalCode': postalCodeController.text,
+          'city': cityController.text,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profil mis à jour avec succès')),
+        );
+      }
     }
   }
 
